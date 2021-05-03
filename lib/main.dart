@@ -32,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
         'https://gist.githubusercontent.com/junsuk5/bb7485d5f70974deee920b8f0cd1e2f0/raw/063f64d9b343120c2cb01a6555cf9b38761b1d94/sample.json');
     var response = await http.get(uri);
     print('Response status: ${response.statusCode}');
-    print('Response status: ${response.body}');
+    print('Response status: ${utf8.decode(response.bodyBytes)}');
   }
 
   @override
