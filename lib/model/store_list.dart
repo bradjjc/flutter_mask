@@ -1,15 +1,15 @@
-class Store {
+class StoreList {
   int count;
-  List<Stores> stores;
+  List<Store> store;
 
-  Store({this.count, this.stores});
+  StoreList({this.count, this.store});
 
-  Store.fromJson(Map<String, dynamic> json) {
+  StoreList.fromJson(Map<String, dynamic> json) {
     count = json['count'];
     if (json['stores'] != null) {
-      stores = new List<Stores>();
+      store = new List<Store>();
       json['stores'].forEach((v) {
-        stores.add(new Stores.fromJson(v));
+        store.add(new Store.fromJson(v));
       });
     }
   }
@@ -17,25 +17,25 @@ class Store {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['count'] = this.count;
-    if (this.stores != null) {
-      data['stores'] = this.stores.map((v) => v.toJson()).toList();
+    if (this.store != null) {
+      data['stores'] = this.store.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Stores {
+class Store {
   String addr;
   String code;
   String createdAt;
-  num lat;
-  num lng;
+  double lat;
+  double lng;
   String name;
   String remainStat;
   String stockAt;
   String type;
 
-  Stores(
+  Store(
       {this.addr,
         this.code,
         this.createdAt,
@@ -46,7 +46,7 @@ class Stores {
         this.stockAt,
         this.type});
 
-  Stores.fromJson(Map<String, dynamic> json) {
+  Store.fromJson(Map<String, dynamic> json) {
     addr = json['addr'];
     code = json['code'];
     createdAt = json['created_at'];
