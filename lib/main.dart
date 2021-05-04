@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_mask/model/store_list.dart';
@@ -46,7 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var jsonStores = jsonResult['stores'];
 
-
     setState(() {
       stores.clear();
       jsonStores.forEach((e) {
@@ -67,7 +65,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('마스크 재고 있는곳: ${stores.length}곳'),
+          title: Text('마스크 재고 있는곳: ${stores.where((store) {
+            return store.remainStat == 'plenty' ||
+                store.remainStat == 'some' ||
+                store.remainStat == 'few';
+          }).length}곳'),
           actions: [
             IconButton(
               icon: Icon(Icons.refresh),
@@ -78,7 +80,11 @@ class _MyHomePageState extends State<MyHomePage> {
         body: isLoading == true
             ? loadingWidget()
             : ListView(
-                children: stores.map((store) {
+                children: stores.where((store) {
+                  return store.remainStat == 'plenty' ||
+                      store.remainStat == 'some' ||
+                      store.remainStat == 'few';
+                }).map((store) {
                   return ListTile(
                     title: Text(store.name),
                     subtitle: Text(store.addr),
@@ -98,22 +104,22 @@ class _MyHomePageState extends State<MyHomePage> {
       color = Colors.green;
     }
     switch (store.remainStat) {
-      case 'plenty' :
+      case 'plenty':
         remainStat = '충분';
         description = '100개 이상';
         color = Colors.green;
         break;
-      case 'some' :
+      case 'some':
         remainStat = '보통';
         description = '30 ~ 100개 이상';
         color = Colors.yellow;
         break;
-      case 'few' :
+      case 'few':
         remainStat = '부족';
         description = '2 ~ 30개 이상';
         color = Colors.red;
         break;
-      case 'empty' :
+      case 'empty':
         remainStat = '소진임박';
         description = '소진임박';
         color = Colors.grey;
