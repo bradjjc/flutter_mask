@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_mask/model/store_list.dart';
-import 'package:flutter_mask/repository/store_repository.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:flutter_mask/view_model/Store_model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider.value(value: StoreModel(),
+      child: MyApp(),
+    ));
 }
 
 class MyApp extends StatelessWidget {
@@ -29,27 +30,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Store> stores = [];
   var isLoading = false;
 
-  final storeRepository = StoreRepository();
 
   @override
   void initState() {
     super.initState();
 
-    storeRepository.fetch().then((value) {
-      setState(() {
-        stores = value;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final storeModel = Provider.of<StoreModel>(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text('마스크 재고 있는곳: ${stores.where((store) {
+          title: Text('마스크 재고 있는곳: ${storeModel.stores.where((store) {
             return store.remainStat == 'plenty' ||
                 store.remainStat == 'some' ||
                 store.remainStat == 'few';
@@ -58,11 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
               icon: Icon(Icons.refresh),
               onPressed: () {
-                storeRepository.fetch().then((value) {
-                  setState(() {
-                    stores = value;
-                  });
-                });
+               storeModel.fetch();
               },
             )
           ],
@@ -70,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: isLoading == true
             ? loadingWidget()
             : ListView(
-                children: stores.where((store) {
+                children: storeModel.stores.where((store) {
                   return store.remainStat == 'plenty' ||
                       store.remainStat == 'some' ||
                       store.remainStat == 'few';
