@@ -5,8 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_mask/model/store.dart';
+import 'package:flutter_mask/model/store_list.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -20,7 +19,7 @@ void main() {
     var response = await http.get(uri);
     expect(response.statusCode, 200);
 
-    Store result = Store.fromJson(json.decode(response.body));
+    StoreList result = StoreList.fromJson(json.decode(response.body));
     expect(result.count, 222);
   });
 }
